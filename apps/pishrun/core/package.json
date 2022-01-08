@@ -1,0 +1,29 @@
+{
+  "name": "@pishrun/pishrun-core",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pishrun Core",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/strapi": "4.0.2",
+    "@strapi/plugin-users-permissions": "4.0.2",
+    "@strapi/plugin-i18n": "4.0.2",
+    "pg": "8.6.0"
+  },
+  "author": {
+    "name": "Ali Shabani"
+  },
+  "strapi": {
+    "uuid": "b2fe338e-75e2-4a41-a42e-c4dc186de097"
+  },
+  "engines": {
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

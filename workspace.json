@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "projects": {
+    "pishrun-client": {
+      "root": "apps/pishrun/client",
+      "sourceRoot": "apps/pishrun/client",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "defaultConfiguration": "production",
+          "options": {
+            "root": "apps/pishrun/client",
+            "outputPath": "dist/apps/pishrun/client"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "pishrun-client:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "pishrun-client:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "pishrun-client:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/pishrun/client"],
+          "options": {
+            "jestConfig": "apps/pishrun/client/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/pishrun/client/**/*.{ts,tsx,js,jsx}"]
+          }
+        }
+      },
+      "tags": []
+    },
+    "pishrun-client-e2e": {
+      "root": "apps/pishrun/client-e2e",
+      "sourceRoot": "apps/pishrun/client-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/pishrun/client-e2e/cypress.json",
+            "devServerTarget": "pishrun-client:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "pishrun-client:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/pishrun/client-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["pishrun-client"]
+    },
+    "pishrun-core": {
+      "root": "apps/pishrun/core",
+      "sourceRoot": "apps/pishrun/core/src",
+      "projectType": "application",
+      "targets": {},
+      "tags": []
+    },
+    "pishrun-types": "libs/pishrun/types",
+    "shared-jwt": "libs/shared/jwt",
+    "strapi-auth": "libs/strapi/auth",
+    "utils": "libs/utils"
+  }
+}

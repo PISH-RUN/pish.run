@@ -1,0 +1,23 @@
+{
+  "root": "libs/pishrun/types",
+  "sourceRoot": "libs/pishrun/types/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/pishrun/types/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/pishrun/types"],
+      "options": {
+        "jestConfig": "libs/pishrun/types/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

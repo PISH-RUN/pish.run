@@ -1,0 +1,23 @@
+{
+  "root": "libs/shared/jwt",
+  "sourceRoot": "libs/shared/jwt/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/jwt/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/jwt"],
+      "options": {
+        "jestConfig": "libs/shared/jwt/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
