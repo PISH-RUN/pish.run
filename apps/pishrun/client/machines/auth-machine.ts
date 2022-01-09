@@ -28,7 +28,7 @@ export const authMachine = createMachine<
   AuthStates
 >({
   id: 'authMachine',
-  initial: 'guest',
+  initial: 'init',
   context: undefined,
   states: {
     init: {
@@ -64,6 +64,6 @@ export const authMachine = createMachine<
 });
 
 async function bootstrap() {
-  const res = await Promise.resolve('asl');
+  const res = await new Promise((res) => setTimeout(res, 10000));
   return res;
 }

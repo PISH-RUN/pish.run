@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discussions",
+  "info": {
+    "singularName": "discussion",
+    "pluralName": "discussions",
+    "displayName": "Discussion"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Body": {
+      "type": "text"
+    },
+    "member": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::member.member",
+      "inversedBy": "discussions"
+    },
+    "task": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::task.task",
+      "inversedBy": "discussion"
+    }
+  }
+}

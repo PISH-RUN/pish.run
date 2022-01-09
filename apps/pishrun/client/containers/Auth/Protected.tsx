@@ -14,12 +14,22 @@ function Protected({ children, guarded = false }) {
   const router = useRouter();
 
   const loggedIn = state.matches('loggedIn');
+  const loading = state.matches('init');
+
+  console.log({ state });
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
     if (guarded && !loggedIn) {
       router.push('/login');
     }
-  }, [router, guarded, loggedIn]);
+  }, [router, loading, guarded, loggedIn]);
+
+  if (state.matches('init')) {
+    return <div>Please Wait we're doing something great</div>;
+  }
 
   if (guarded && !loggedIn) {
     return null;
