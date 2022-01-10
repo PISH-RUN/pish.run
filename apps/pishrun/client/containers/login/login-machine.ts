@@ -1,31 +1,14 @@
 import { createMachine, DoneInvokeEvent, assign } from 'xstate';
-import {
-  FailedLoginResponse,
-  JWT,
-  SuccessLoginResponse,
-  User,
-} from '@pishrun/pishrun/types';
+import { FailedLoginResponse, User } from '@pishrun/pishrun/types';
+import { strapi } from '../../services/strapi';
 import { auth } from '../../services/auth';
-import jwt from '../../services/jwt';
-
-type LoginContext = {
-  jwt: JWT;
-  user: User;
-  error: string;
-};
-
-export type StartEvent = { type: 'START' };
-export type SubmitEvent = { type: 'SUBMIT'; email: string; password: string };
-export type SuccessfulLoginEvent = DoneInvokeEvent<{ user: User }>;
-
-type LoginEvents = StartEvent | SubmitEvent | SuccessfulLoginEvent;
-
-type LoginStates =
-  | { value: 'init'; context: undefined }
-  | { value: 'dirty'; context: undefined }
-  | { value: 'loggingIn'; context: undefined }
-  | { value: 'loggedIn'; context: Omit<LoginContext, 'error'> }
-  | { value: 'failed'; context: Pick<LoginContext, 'error'> };
+import { jwtService } from '../../services/jwt';
+import {
+  LoginContext,
+  LoginEvents,
+  LoginStates,
+  SubmitEvent,
+} from './login-types';
 
 const loginMachine = createMachine<
   Partial<LoginContext>,
@@ -97,17 +80,15 @@ async function login(
   event: SubmitEvent
 ): Promise<User> {
   try {
-    const data = await auth.login<SuccessLoginResponse>({
-      provider: 'email',
-      email: event.email,
+    const { user } = await strapi.login({
+      identifier: event.email,
       password: event.password,
     });
 
-    jwt.set(data.jwt);
-    return data.user;
+    return user as User;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      throw error;
     }
 
     throw new Error((error as FailedLoginResponse).message);

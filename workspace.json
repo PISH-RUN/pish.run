@@ -91,6 +91,88 @@
       "tags": []
     },
     "pishrun-types": "libs/pishrun/types",
+    "pishrun-ui": {
+      "root": "libs/pishrun/ui",
+      "sourceRoot": "libs/pishrun/ui/src",
+      "projectType": "library",
+      "tags": [],
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/pishrun/ui/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/pishrun/ui"],
+          "options": {
+            "jestConfig": "libs/pishrun/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "executor": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/react",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/pishrun/ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "executor": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/react",
+            "outputPath": "dist/storybook/pishrun-ui",
+            "config": {
+              "configFolder": "libs/pishrun/ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "pishrun-ui-e2e": {
+      "root": "apps/pishrun/ui-e2e",
+      "sourceRoot": "apps/pishrun/ui-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/pishrun/ui-e2e/cypress.json",
+            "devServerTarget": "pishrun-ui:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "pishrun-ui:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/pishrun/ui-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["pishrun-ui"]
+    },
     "shared-jwt": "libs/shared/jwt",
     "strapi-auth": "libs/strapi/auth",
     "utils": "libs/utils"

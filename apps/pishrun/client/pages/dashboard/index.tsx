@@ -3,8 +3,8 @@ import useUser from '../../hooks/use-user';
 export default function Dashboard() {
   const user = useUser();
 
-  console.log(user);
-  return <div>Welcome {user.username}</div>;
+  console.log({ cmp: 'dashboard', user });
+  return <div>Welcome</div>;
 }
 
 export async function getStaticProps(context) {

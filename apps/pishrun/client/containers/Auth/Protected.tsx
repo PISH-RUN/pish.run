@@ -9,8 +9,8 @@ export type ProtectedProps = {
 };
 
 function Protected({ children, guarded = false }) {
-  const { authService } = useContext(GlobalContext);
-  const [state] = useActor(authService);
+  const { userService } = useContext(GlobalContext);
+  const [state] = useActor(userService);
   const router = useRouter();
 
   const loggedIn = state.matches('loggedIn');

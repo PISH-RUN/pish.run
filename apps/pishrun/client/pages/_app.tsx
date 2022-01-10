@@ -3,14 +3,14 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Protected from '../containers/Auth/Protected';
 import { GlobalContext } from '../contexts/global-context';
-import { authMachine } from '../machines/auth-machine';
+import { UserMachine } from '../machines/user/user-machine';
 import './styles.css';
 
 function CustomApp({ Component, pageProps }: AppProps) {
-  const authService = useInterpret(authMachine);
+  const userService = useInterpret(UserMachine);
 
   return (
-    <GlobalContext.Provider value={{ authService }}>
+    <GlobalContext.Provider value={{ userService }}>
       <Head>
         <title>Welcome to pishrun-front!</title>
       </Head>

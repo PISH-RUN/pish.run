@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@pishrun/pishrun/types": ["libs/pishrun/types/src/index.ts"],
+      "@pishrun/pishrun/ui": ["libs/pishrun/ui/src/index.ts"],
       "@pishrun/shared/jwt": ["libs/shared/jwt/src/index.ts"],
       "@pishrun/strapi/auth": ["libs/strapi/auth/src/index.ts"],
       "@pishrun/utils": ["libs/utils/src/index.ts"]

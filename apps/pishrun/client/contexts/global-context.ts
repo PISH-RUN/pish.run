@@ -1,9 +1,9 @@
 import React from 'react';
 import { InterpreterFrom } from 'xstate';
-import { authMachine } from '../machines/auth-machine';
+import { UserMachine } from '../machines/user/user-machine';
 
 interface GlobalContextInterface {
-  authService?: InterpreterFrom<typeof authMachine>;
+  userService?: InterpreterFrom<typeof UserMachine>;
 }
 
 export const GlobalContext = React.createContext<GlobalContextInterface>({});

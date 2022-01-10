@@ -1,3 +1,3 @@
 import { jwt } from '@pishrun/shared/jwt';
 
-export default jwt({ prefix: 'PISHRUN' });
+export const jwtService = jwt({ prefix: 'PISHRUN' });

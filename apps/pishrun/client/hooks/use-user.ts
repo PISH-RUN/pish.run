@@ -4,9 +4,9 @@ import { useContext } from 'react';
 import { GlobalContext } from '../contexts/global-context';
 
 export default function useUser(): User | null {
-  const { authService } = useContext(GlobalContext);
+  const { userService } = useContext(GlobalContext);
 
-  const user = useSelector(authService, (state) =>
+  const user = useSelector(userService, (state) =>
     state.matches('loggedIn') ? state.context.user : null
   );
 

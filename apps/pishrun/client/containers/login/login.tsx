@@ -2,25 +2,28 @@ import { useContext } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMachine } from '@xstate/react';
-import loginMachine, { SuccessfulLoginEvent } from './login-machine';
+import loginMachine from './login-machine';
 import { GlobalContext } from '../../contexts/global-context';
 import LoginForm from '../../forms/login/with-email-password';
+import { SuccessfulLoginEvent } from './login-types';
+import { useFlow } from '../../hooks/use-flow';
 
 export default function Login(): JSX.Element {
-  const router = useRouter();
+  const flow = useFlow();
   const globalServices = useContext(GlobalContext);
 
   const [state, send] = useMachine(loginMachine, {
     actions: {
       loggedIn: (_, event: SuccessfulLoginEvent) => {
-        console.log({ event });
-        globalServices.authService.send('LOGIN', event.data);
-        router.push('dashboard');
+        const { user } = event.data;
+        globalServices.userService.send('LOGGED_IN', {
+          user,
+        });
+
+        flow.loggedIn();
       },
     },
   });
-
-  console.log({ state });
 
   return (
     <div>
