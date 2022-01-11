@@ -1,4 +1,4 @@
-import { LoginFormProps } from '@pishrun/pishrun/types';
+import { FormProps } from '@pishrun/pishrun/types';
 import { isEmail } from '@pishrun/utils';
 import { useEffect } from 'react';
 import { useForm, UseFormRegister } from 'react-hook-form';
@@ -8,7 +8,7 @@ type FormValues = {
   password: string;
 };
 
-export default function LoginForm(props: LoginFormProps<FormValues>) {
+export default function LoginForm(props: FormProps<FormValues>) {
   const {
     register,
     handleSubmit,

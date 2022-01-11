@@ -10,7 +10,8 @@ export default function Dashboard() {
 export async function getStaticProps(context) {
   return {
     props: {
-      guarded: true,
+      allowed: ['loggedIn'],
+      fallback: 'login',
     },
   };
 }

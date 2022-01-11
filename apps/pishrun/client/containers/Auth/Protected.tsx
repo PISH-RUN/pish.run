@@ -1,41 +1,50 @@
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import { GlobalContext } from '../../contexts/global-context';
+import { AppContext } from '../../contexts/app-context';
+import { AllowedUserState } from '../../machines/user/user-machine-types';
 
 export type ProtectedProps = {
   children: React.ReactNode;
-  guarded?: boolean;
+  allowed?: AllowedUserState | Array<AllowedUserState>;
+  fallback?: string;
 };
 
-function Protected({ children, guarded = false }) {
-  const { userService } = useContext(GlobalContext);
+function Protected(props) {
+  const { userService } = useContext(AppContext);
   const [state] = useActor(userService);
   const router = useRouter();
 
-  const loggedIn = state.matches('loggedIn');
+  const allowedStates = Array.isArray(props.allowed)
+    ? props.allowed
+    : [props.allowed];
+  const allowed = allowedStates.some(state.matches);
   const loading = state.matches('init');
 
   console.log({ state });
 
   useEffect(() => {
-    if (loading) {
+    if (loading || allowed) {
       return;
     }
-    if (guarded && !loggedIn) {
-      router.push('/login');
+
+    if (props.fallback) {
+      router.push(props.fallback);
+      return;
     }
-  }, [router, loading, guarded, loggedIn]);
+
+    router.back();
+  }, [router, loading, allowed, props.fallback]);
 
   if (state.matches('init')) {
-    return <div>Please Wait we're doing something great</div>;
+    return <div>Loading...</div>;
   }
 
-  if (guarded && !loggedIn) {
+  if (!allowed) {
     return null;
   }
 
-  return children;
+  return props.children;
 }
 
 export default Protected;

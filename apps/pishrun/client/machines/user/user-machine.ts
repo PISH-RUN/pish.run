@@ -1,9 +1,9 @@
 import { User } from '@pishrun/pishrun/types';
-import { createMachine } from 'xstate';
-import { assign } from 'xstate';
+import { createMachine, assign } from 'xstate';
 import { strapi } from '../../services/strapi';
 import {
   LoggedInEvent,
+  BootstrapDone,
   UserContext,
   UserEvent,
   UserStates,
@@ -24,6 +24,9 @@ export const UserMachine = createMachine<
         src: bootstrap,
         onDone: {
           target: 'loggedIn',
+          actions: assign((_, event: BootstrapDone) => ({
+            user: event.data.user,
+          })),
         },
         onError: {
           target: 'guest',
@@ -53,5 +56,9 @@ export const UserMachine = createMachine<
 async function bootstrap() {
   const user = await strapi.fetchUser();
 
-  return user as User;
+  if (!user) {
+    throw new Error('Unauthenticated');
+  }
+
+  return { user: user as User };
 }

@@ -1,16 +1,12 @@
 import { createMachine, DoneInvokeEvent, assign } from 'xstate';
-import { FailedLoginResponse, User } from '@pishrun/pishrun/types';
-import { strapi } from '../../services/strapi';
-import { auth } from '../../services/auth';
-import { jwtService } from '../../services/jwt';
-import {
-  LoginContext,
-  LoginEvents,
-  LoginStates,
-  SubmitEvent,
-} from './login-types';
+import { LoginContext, LoginEvents, LoginStates } from './login-types';
+import { login } from './login-actions';
 
-const loginMachine = createMachine<
+export enum loginTags {
+  DISABLED = 'disabled',
+}
+
+export const loginMachine = createMachine<
   Partial<LoginContext>,
   LoginEvents,
   LoginStates
@@ -19,16 +15,16 @@ const loginMachine = createMachine<
   initial: 'init',
   states: {
     init: {
-      tags: 'disabled',
+      tags: loginTags.DISABLED,
       on: {
-        START: 'dirty',
+        TOUCH: 'touched',
       },
       meta: {
         description: 'Page already loaded',
       },
     },
 
-    dirty: {
+    touched: {
       on: {
         SUBMIT: { target: 'loggingIn' },
       },
@@ -64,7 +60,7 @@ const loginMachine = createMachine<
     },
 
     failed: {
-      tags: 'disabled',
+      tags: loginTags.DISABLED,
       on: {
         START: { target: 'dirty' },
       },
@@ -74,25 +70,3 @@ const loginMachine = createMachine<
     },
   },
 });
-
-async function login(
-  ctx: Partial<LoginContext>,
-  event: SubmitEvent
-): Promise<User> {
-  try {
-    const { user } = await strapi.login({
-      identifier: event.email,
-      password: event.password,
-    });
-
-    return user as User;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw error;
-    }
-
-    throw new Error((error as FailedLoginResponse).message);
-  }
-}
-
-export default loginMachine;
