@@ -1,6 +1,6 @@
 import { User } from '@pishrun/pishrun/types';
 import { createMachine, assign } from 'xstate';
-import { strapi } from '../../services/strapi';
+import { getMember, getPerformingEvent, strapi } from '../../services/strapi';
 import {
   LoggedInEvent,
   BootstrapDone,
@@ -22,12 +22,16 @@ export const UserMachine = createMachine<
       invoke: {
         id: 'user-bootstrap',
         src: bootstrap,
-        onDone: {
-          target: 'loggedIn',
-          actions: assign((_, event: BootstrapDone) => ({
-            user: event.data.user,
-          })),
-        },
+        onDone: [
+          {
+            target: 'loggedIn',
+            cond: (ctx, event: BootstrapDone) => event.data.event,
+            actions: assign((_, event: BootstrapDone) => ({
+              user: event.data.user,
+            })),
+          },
+        ],
+
         onError: {
           target: 'guest',
         },
@@ -47,18 +51,29 @@ export const UserMachine = createMachine<
     },
     loggedIn: {
       on: {
+        ENTER_EVENT: 'performing',
         LOGGED_OUT: 'guest',
       },
     },
+    performing: {},
   },
 });
 
 async function bootstrap() {
-  const user = await strapi.fetchUser();
+  const [user, event] = await Promise.all([
+    strapi.fetchUser() as Promise<User>,
+    getPerformingEvent(),
+  ]);
 
   if (!user) {
     throw new Error('Unauthenticated');
   }
 
-  return { user: user as User };
+  if (!event) {
+    return { user, event: null, member: null };
+  }
+
+  const member = await getMember(user.id, event.id);
+
+  return { user, event, member };
 }

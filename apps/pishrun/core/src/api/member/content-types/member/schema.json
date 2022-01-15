@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Role": {
+    "role": {
       "type": "enumeration",
       "enum": [
         "teammate",
@@ -21,11 +21,11 @@
       "required": true,
       "default": "teammate"
     },
-    "entered_at": {
+    "enteredAt": {
       "type": "datetime",
       "required": false
     },
-    "exited_at": {
+    "exitedAt": {
       "type": "datetime"
     },
     "users_permissions_user": {

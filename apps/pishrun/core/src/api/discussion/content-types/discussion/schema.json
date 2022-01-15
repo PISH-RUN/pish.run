@@ -4,14 +4,15 @@
   "info": {
     "singularName": "discussion",
     "pluralName": "discussions",
-    "displayName": "Discussion"
+    "displayName": "Discussion",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "Body": {
+    "body": {
       "type": "text"
     },
     "member": {
@@ -24,7 +25,7 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::task.task",
-      "inversedBy": "discussion"
+      "mappedBy": "discussion"
     }
   }
 }

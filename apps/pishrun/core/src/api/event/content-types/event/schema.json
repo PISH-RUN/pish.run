@@ -38,6 +38,11 @@
       "relation": "oneToMany",
       "target": "api::team.team",
       "mappedBy": "event"
+    },
+    "is_performing": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

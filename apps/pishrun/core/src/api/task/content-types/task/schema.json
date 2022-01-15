@@ -4,20 +4,21 @@
   "info": {
     "singularName": "task",
     "pluralName": "tasks",
-    "displayName": "Task"
+    "displayName": "Task",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string"
     },
-    "Body": {
+    "body": {
       "type": "text"
     },
-    "Status": {
+    "status": {
       "type": "enumeration",
       "enum": [
         "todo",
@@ -39,10 +40,10 @@
     "estimation": {
       "type": "integer"
     },
-    "began_at": {
+    "beganAt": {
       "type": "datetime"
     },
-    "finished_at": {
+    "finishedAt": {
       "type": "datetime"
     },
     "member": {
